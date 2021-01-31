@@ -1,3 +1,56 @@
 #!/usr/bin/env ruby
 
 require_relative '../config/environment'
+
+puts "Welcome to TicTacToe Game!"
+gameover = false
+  p1_wins = 0
+  p2_wins = 0
+
+while !gameover
+  # puts "<<<<< Current Scores >>>>>"
+  # puts "Player_1 [#{p1_wins}] : [#{p2_wins}] Player_2"
+
+  p1, p2, player_1, player_2 = nil
+
+  while !(p1 == "h" || p1 == "c")
+    puts "\nFor Player_1 : Choose [H]uman Player or [C]omputer Player [h/c]."
+    p1 = gets.strip.downcase
+    if p1 == "h"
+      player_1 = Players::Human.new("X")
+    elsif p1 == "c"
+      player_1 = Players::Computer.new("X")
+    end
+  end
+
+  while !(p2 == "h" || p2 == "c")
+    puts "\nFor Player_2 : Choose [H]uman Player or [C]omputer Player [h/c]."
+    p2 = gets.strip.downcase
+    if p2 == "h"
+      player_2 = Players::Human.new("O")
+    elsif p2 == "c"
+      player_2 = Players::Computer.new("O")
+    end
+  end
+
+  game = Game.new(player_1, player_2, Board.new)
+  game.play
+  if game.winner == "X"
+    p1_wins += 1
+  elsif game.winner == "O"
+    p2_wins += 1
+  end
+
+  puts "\n<<<<< Current Scores >>>>>"
+  puts "Player_1 [#{p1_wins}] : [#{p2_wins}] Player_2"
+  
+  answer = nil
+  while !(answer == "y" || answer == "n")
+    puts "\nDo you want to play another TicTacToe Game? (Y/N)"
+    answer = gets.strip.downcase
+  end
+  if answer == "n"
+    puts "\n~ Byebye ~"
+    gameover = true 
+  end
+end
